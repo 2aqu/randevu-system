@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Randevu Sistemi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Randevu Sistemi</h2>
+
+        <!-- Uyarı kutusu -->
+        {{uyariKutusu}}
+
+        <!-- Randevu Formu -->
+        <form action="/randevu" method="POST">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="isim">İsim</label>
+                    <input type="text" class="form-control" id="isim" name="isim" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="soyisim">Soyisim</label>
+                    <input type="text" class="form-control" id="soyisim" name="soyisim" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="telefon">Telefon</label>
+                    <input type="tel" class="form-control" id="telefon" name="telefon" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="tarih">Tarih</label>
+                    <input type="date" class="form-control" id="tarih" name="tarih" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="saat">Saat</label>
+                    <input type="time" class="form-control" id="saat" name="saat" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Randevu Al</button>
+        </form>
+
+        <hr>
+
+        <!-- Randevular Tablosu -->
+        <h4 class="mt-4">Randevular</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">İsim</th>
+                    <th scope="col">Soyisim</th>
+                    <th scope="col">Telefon</th>
+                    <th scope="col">Tarih ve Saat</th>
+                    <th scope="col">İşlem</th> <!-- Yeni eklenen sütun -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Buraya JavaScript ile doldurulacak -->
+                {{randevuRows}}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Kaldırma işlemi için bir işlev tanımla
+        function removeRandevu(id) {
+            // Kullanıcıya onay al
+            if (confirm('Bu randevuyu kaldırmak istediğinize emin misiniz?')) {
+                // Kaldırma isteğini sunucuya gönder
+                fetch(`/randevu/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Sayfayı yenile
+                        window.location.reload();
+                    } else {
+                        console.error('Randevu kaldırma hatası:', response.statusText);
+                        alert('Randevu kaldırma hatası: ' + response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Randevu kaldırma hatası:', error);
+                    alert('Randevu kaldırma hatası: ' + error);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
